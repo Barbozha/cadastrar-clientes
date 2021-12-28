@@ -67,4 +67,31 @@ public class JdbcDAOCliente implements DAOCliente {
 		return clientes;
 	}
 
+	@Override
+	public Cliente buscarPeloCodigo(Long codigo) {
+		// Busca por codigo
+		Cliente cliente = null;
+		try {
+			String sql = String.format("select * from tab_cliente where id = %d", codigo);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				cliente = new Cliente();
+				cliente.setId(rs.getLong("id"));
+				cliente.setNome(rs.getString("Nome"));
+				cliente.setTelefone(rs.getString("Telefone"));
+				cliente.setEmail(rs.getNString("Email"));
+			}
+		}catch(SQLException e) {
+			throw new DAOException("Error! ao acessar a tabela", e);
+		}finally {
+			try {
+				this.connection.close();
+			}catch(Exception e) {
+				throw new DAOException("Erro! ao fechar o Banco.", e);
+			}
+		}
+		return cliente;
+	}
+
 }

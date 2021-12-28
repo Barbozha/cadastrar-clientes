@@ -8,4 +8,6 @@ public interface DAOCliente {
 	public void salvar(Cliente cliente);
 	
 	public List<Cliente> listarTodos();
+	
+	public Cliente buscarPeloCodigo(Long codigo);
 }
